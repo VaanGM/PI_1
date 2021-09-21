@@ -21,7 +21,7 @@ class Requisicao(models.Model):
     orgao = models.ForeignKey(Orgao, on_delete = models.CASCADE)
     tema = models.CharField(max_length=200)
     numero = models.IntegerField(default=0)
-    comentario = models.CharField(default=0)
+    comentario = models.CharField(max_length=500)
     data = models.DateTimeField()
     requerente = models.ForeignKey(Municipe, on_delete = models.CASCADE)
 
