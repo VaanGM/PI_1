@@ -14,11 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 #Importar include para poder referênciar outros URLconfs
+from requerimento.views import ViewDados, ViewEnviado
 from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
     #Sempre usar include para referênciar URLs de apps
-    path('requerimento/', include('requerimento.urls')), #Isso diz que o site busca
     path('admin/', admin.site.urls),
+    path('requerimento/', include('requerimento.urls')), #Isso diz que o site busca
+    path('enviado/', ViewEnviado.as_view(), name='enviado'),
+    path('dados/', ViewDados.as_view(), name='dados'),
 ]

@@ -6,6 +6,7 @@ from . import views
 app_name = 'requerimento'
 urlpatterns = [
     path('', views.ViewIndex.as_view(), name='index'),
-    path('<int:pk>/', views.ViewEnviado.as_view(), name='enviado'),
+    path('enviado/', views.ViewEnviado.as_view(), name='enviado'),
+    path('dados/', views.ViewDados.as_view(), name='dados'),
     #path('<int:pk>/results/', views.ResultsView.as_view(), name='registros'),
 ]

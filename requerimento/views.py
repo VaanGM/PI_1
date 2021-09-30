@@ -3,20 +3,21 @@ from django.template import loader
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
-from django.views.generic.edit import FormView
+from datetime import datetime
+from django.views.generic.edit import CreateView, FormView
 
 from .models import Municipe, Orgao, Requisicao
-from .forms import MunicipeForm
+from .forms import MunicipeForm, RequisicaoForm
 
 
 #Pra chamar uma view, é preciso mapea-la para uma URL, no arquivo urls.py, neste mesmo app.
+#Pesquisar sobre *args e **kwargs ------
 
 class ViewIndex(FormView):
     
     template_name = 'requerimento/index.html'
     form_class = MunicipeForm
-    objeto_contexto = 'dados_requerimento'
-    success_url = '/enviado/'
+    success_url = '/dados/'
 
 
     def form_new(request):
@@ -26,10 +27,30 @@ class ViewIndex(FormView):
     def form_valid(self, form):
         return super().form_valid(form)
 
+class ViewDados(CreateView):
+    template_name = 'requerimento/dados.html'
+    form_class = RequisicaoForm
+    model = Requisicao
+    success_url = '/enviado/'
+
+    def form_new(request):
+        form = MunicipeForm()
+        return render('requerimento/index.html', {'form': form})
+
+    def form_valid(self, form):
+        form.data = datetime.now()
+        return super().form_valid(form)
 
 class ViewEnviado(generic.DetailView):
-    model = Requisicao
-    template_name = 'requerimento/index.html'
+    #model = Requisicao
+    template_name = 'requerimento/enviado.html'
+
+    #def form_new(request):
+    #    form = MunicipeForm()
+    #    return render('requerimento/enviado.html', {'form': form})
+
+    #def form_valid(self, form):
+    #    return super().form_valid(form)
 
 
 #def registros(request):

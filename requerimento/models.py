@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 #Models são o layout do banco de dados representado através de conceitos de orientção a objeto
 class Municipe(models.Model):
@@ -7,11 +8,13 @@ class Municipe(models.Model):
 
     def __str__(self):
         return "%s" % (self.nome)
+      
+    def get_absolute_url(self):
+        return reverse('municipe-detail', kwargs={'pk': self.pk})
 
 class Orgao(models.Model):
     nome = models.CharField(max_length=100)
     gestor = models.CharField(max_length=100)
-    #orgao_id = models.IntegerField (primary_key=True)
 
     def __str__(self):
         return "%s" % (self.nome)
@@ -27,5 +30,8 @@ class Requisicao(models.Model):
 
     def __str__(self):
         return "%s" % (self.numero)
+    
+    def get_absolute_url(self):
+        return reverse('requisicao-detail', kwargs={'pk': self.pk})
 
 
