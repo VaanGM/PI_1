@@ -1,7 +1,5 @@
 from requerimento.models import Municipe, Requisicao
 from django import forms
-
-from django.db import models
  
 class MunicipeForm(forms.ModelForm):
     class Meta:
@@ -16,10 +14,9 @@ class MunicipeForm(forms.ModelForm):
 class RequisicaoForm(forms.ModelForm):
     class Meta:
         model = Requisicao
-        fields = ('orgao','tema','comentario',)
+        fields = ('tema','comentario',)
     
     def __init__(self, *args, **kwargs):
         super(forms.ModelForm, self).__init__(*args, **kwargs)
-        self.fields['orgao'].label = 'Nome'
         self.fields['tema'].label = 'Tema'
         self.fields['comentario'].label = 'Comentários:'
