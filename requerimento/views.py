@@ -42,19 +42,11 @@ class ViewDados(CreateView):
         #Eu faço as cópias dos valores aqui e não na outra tela para evitar que um municipe seja inserido no DB
         #sem que junto dele seja criada uma requisição
         municipe.save() #Salvo o objeto municipe no banco
-        #municipe.pk faz referencia a chave primaria do municipe...
-        #COMO É QUE EU SALVO ESSA DESGRAÇA de PK NA FK DA REQUISIÇÃO
-        #TAQUEPARIU
-        #Cannot assign "Valor da PK de municipe": "Requisicao.requerente" must be a "Municipe" instance.
-        #COMO ASSIM, CARALHO?
-        #TESTANDO ALTOS ROLE AQUI --------------
         requisicao = form.save(commit=False) #salvo o conteudo do form na var requisição
         requisicao.requerente = municipe #salvo o obj municipe no valor do requerente, linkando FK e PK
-        requisicao.save() #Salvo a requisição, não sei ao certo qual magia rola aqui
+        requisicao.save() #Salvo a requisição
         form.save() #salvo o form
         return super().form_valid(form) # Retorna um httpResponse para a próxima página
-        #NÃO ACREDITO QUE ESSA BAGUNÇA FUNCIONA, UFA
-        #TEMOS INSERÇÃO FUNCIONAL DE DADOS NO BANCO!!!!!!!!!! SEXTOU!!!!!!!!
 
 class ViewEnviado(generic.DetailView):
     template_name = 'requerimento/enviado.html'
