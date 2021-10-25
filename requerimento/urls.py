@@ -8,5 +8,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.ViewIndex.as_view(), name='index'),
     path('dados/', views.ViewDados.as_view(), name='dados'),
-    path('<slug:slug>/', views.ViewEnviado.as_view(), name='enviado'),
+    path('enviado/', views.ViewEnviado.as_view(), name='enviado'),
 ]

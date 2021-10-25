@@ -11,6 +11,8 @@ from django.views.generic.edit import CreateView, FormView
 from .models import Municipe, Requisicao
 from .forms import MunicipeForm, RequisicaoForm
 
+#Considerar o uso de um Cron Job para reiniciar a numeração das requisições todo ano
+
 class ViewIndex(FormView):   
     template_name = 'requerimento/index.html'
     form_class = MunicipeForm
@@ -38,34 +40,19 @@ class ViewDados(CreateView):
     def form_valid(self, form):
         municipe = Municipe() #Cria um objeto de tipo Municipe
         municipe.nome = self.request.session.get('nome') #Copia os valores da sessão para o objeto
-        municipe.email = self.request.session.get('email')#Copia os valores da sessão para o objeto
-        #Eu faço as cópias dos valores aqui e não na outra tela para evitar que um municipe seja inserido no DB
-        #sem que junto dele seja criada uma requisição
+        municipe.email = self.request.session.get('email')
         municipe.save() #Salvo o objeto municipe no banco
-        #municipe.pk faz referencia a chave primaria do municipe...
-        #COMO É QUE EU SALVO ESSA DESGRAÇA de PK NA FK DA REQUISIÇÃO
-        #TAQUEPARIU
-        #Cannot assign "Valor da PK de municipe": "Requisicao.requerente" must be a "Municipe" instance.
-        #COMO ASSIM, CARALHO?
-        #TESTANDO ALTOS ROLE AQUI --------------
+        #Eu copio os valores e salvo eles no banco aqui e não na outra view para 
+        # evitar que um municipe seja inserido no DB sem que junto dele seja criada uma requisição
         requisicao = form.save(commit=False) #salvo o conteudo do form na var requisição
         requisicao.requerente = municipe #salvo o obj municipe no valor do requerente, linkando FK e PK
-        requisicao.save() #Salvo a requisição, não sei ao certo qual magia rola aqui
+        requisicao.save() #Salvo a requisição
         form.save() #salvo o form
+        self.request.session['numero_requisicao'] = requisicao.numero
         return super().form_valid(form) # Retorna um httpResponse para a próxima página
-        #NÃO ACREDITO QUE ESSA BAGUNÇA FUNCIONA, UFA
-        #TEMOS INSERÇÃO FUNCIONAL DE DADOS NO BANCO!!!!!!!!!! SEXTOU!!!!!!!!
 
-class ViewEnviado(generic.DetailView):
+class ViewEnviado(CreateView):
     template_name = 'requerimento/enviado.html'
     model = Requisicao
-    slug_field = 'tema'
-    
-    def detail_new(request):
-        try:
-            queryset = Requisicao.objects.get(request.session.get('id'))
-        except:
-            raise Http404
-        req = get_object_or_404(Requisicao, pk=id)
-        return render(request, 'requerimento/requerimento.html')
-        #p = get_object_or_404(Poll, pk=poll_id)
+    success_url = '//'
+    fields = []
