@@ -1,13 +1,4 @@
-from django.forms.forms import Form
-from django.http import HttpResponseRedirect
-from django.template import loader
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.views import generic
-from django.utils import timezone
-from django.http import Http404
 from django.views.generic.edit import CreateView, FormView
-
 from .models import Municipe, Requisicao
 from .forms import MunicipeForm, RequisicaoForm
 
@@ -35,7 +26,7 @@ class ViewDados(CreateView):
     success_url = '/enviado/'
 
     def form_new(request):
-        form = RequisicaoForm(request.post or None) #Devo usar esses parâmetros na função?
+        form = RequisicaoForm(request.post or None)
 
     def form_valid(self, form):
         municipe = Municipe() #Cria um objeto de tipo Municipe
@@ -46,6 +37,8 @@ class ViewDados(CreateView):
         # evitar que um municipe seja inserido no DB sem que junto dele seja criada uma requisição
         requisicao = form.save(commit=False) #salvo o conteudo do form na var requisição
         requisicao.requerente = municipe #salvo o obj municipe no valor do requerente, linkando FK e PK
+        temp = Requisicao.objects.latest('numero')
+        requisicao.numero = temp.numero + 1
         requisicao.save() #Salvo a requisição
         form.save() #salvo o form
         self.request.session['numero_requisicao'] = requisicao.numero
