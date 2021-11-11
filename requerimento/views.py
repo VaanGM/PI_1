@@ -37,7 +37,11 @@ class ViewDados(CreateView):
         # evitar que um municipe seja inserido no DB sem que junto dele seja criada uma requisição
         requisicao = form.save(commit=False) #salvo o conteudo do form na var requisição
         requisicao.requerente = municipe #salvo o obj municipe no valor do requerente, linkando FK e PK
-        temp = Requisicao.objects.latest('numero')
+        try:
+            temp = Requisicao.objects.latest('numero')
+        except Requisicao.DoesNotExist:
+            temp = Requisicao()
+            temp.numero=0
         requisicao.numero = temp.numero + 1
         requisicao.save() #Salvo a requisição
         form.save() #salvo o form
