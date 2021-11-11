@@ -4,6 +4,12 @@
     padding: 20px 20px 20px 40px;
 }
 
+footer{
+    height: auto;
+    margin-bottom: 0;
+    width: auto;
+}
+
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
     color: #ffffff;
     font-size: 36pt;
@@ -14,6 +20,7 @@
     background-color: #ececec;
     margin-top: 0;
     padding: 20px 20px 20px 40px;
+    height:auto;
 }
 
 .form p{   
@@ -21,11 +28,6 @@
     margin-top: 0;
     padding: 20px 20px 20px 40px;
 }
-
-/**#id_nome.nome{
-
-}
-**/
 
 .input_field{
     width: 100%;
@@ -37,7 +39,6 @@
     box-sizing: border-box;
 }
 
-
 #contact-submit-btn{
     background-color: #1e2c3d; /* Green */
     border: none;
@@ -47,4 +48,5 @@
     display: inline-block;
     font-size: 16px;
     margin-top: 5px;
+    margin-bottom: 30px;
 }
